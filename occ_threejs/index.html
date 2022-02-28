@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>WasmOCC_Demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            color: #202020;
+            font-size: 20px;
+            margin-top: -30px;
+            margin-left: -40px;
+        }
+    </style>
+</head>
+
+<body id="body">
+    <p id="loading">loading......</p>
+    <script type="module">
+        import { WasmOCC } from "./WasmOCC.js";
+        import { occApp } from "./dist/index.js";
+        WasmOCC.onRuntimeInitialized = function () {
+            new occApp();
+        }
+    </script>
+</body>
+
+</html>
