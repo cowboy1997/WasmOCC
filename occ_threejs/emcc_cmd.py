@@ -3,11 +3,11 @@ import sys,os
 import subprocess
 
 #occ的inc目录
-occInc_path ="../occSrc/inc"
+occInc_path ="../occ_src/inc"
 #wasm接口的源文件目录
-cppDir = "../occSrc/"
+cppDir = "../occ_src/"
 #occ编译的.a文件目录
-libDir = "../occSrc/lib"
+libDir = "../occ_src/lib"
 def emcc_cmd():
 	cpp_files = ""
 	for root, dirs, files in os.walk(cppDir):
