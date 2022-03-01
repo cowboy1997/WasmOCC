@@ -4,7 +4,7 @@ occ的WebAssembly实现，用了threejs渲染，threejs中用到的occ相关的�
 
 项目的demo预览https://cowboy1997.github.io/WasmOCC/occ_threejs 
 
-1、对occ的编译可以occ_threejs文件下运行emcc_cmd.py文件,在此前提需要先修改emcc_cmd.py文件中的相关路径。
+1、对occ的编译可以occ_threejs文件下运行emcc_cmd.py文件,在此前提需要用Emscripten编译opencascade为静态库并修改emcc_cmd.py文件中的相关路径。
 
 2、对ts的编译可以occ_threejs文件夹下运行tsc进行编译。
 
