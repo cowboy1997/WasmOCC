@@ -44,5 +44,6 @@ export namespace WasmOCC
 	}
 	function getTriangleData(Topo_Shape:TopoDS_Shape,theLinDeflection:number,theAngDeflection:number):TriangleData;
 	function MakeBottle(width:number, height:number,thickness:number): TopoDS_Shape;
+	function readBrep(BrepData:string): TopoDS_Shape;
 
 }

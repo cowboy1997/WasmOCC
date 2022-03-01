@@ -1,5 +1,6 @@
 import * as THREE from "../lib/threejs/three.module.js";
 import { OrbitControls } from '../lib/threejs/controls/OrbitControls.js';
+import { occObject3D } from "./occObject3D.js";
 
 export  class ThreeScene {
     public scene: THREE.Scene
@@ -7,7 +8,11 @@ export  class ThreeScene {
     public renderer: THREE.WebGLRenderer
     private controls: OrbitControls;
 
+
+    public objs: Map<number,occObject3D>;
+
     constructor() {
+        this.objs=new Map<number,occObject3D>();
         this.init()
     }
     private init() {
@@ -156,5 +161,13 @@ export  class ThreeScene {
         catch {
         }
         this.controls.update();
+    }
+
+    public clearObject()
+    {
+        for (let obj of this.objs.values()) {
+            this.scene.remove(obj.mesh);
+            obj.topoShape["delete"]();
+        }
     }
 }

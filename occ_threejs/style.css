@@ -2,3 +2,23 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
+.btn_sty {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    /* background-image: url("../image/1.png") ; */
+    border-radius: 5px;
+    border: 3 none;
+    background: #1790ff;
+    color: #fff;
+    right: 265px;
+    top: 5px;
+    text-align: center;
+}
+
+
+
+#file {
+    position: absolute;
+}

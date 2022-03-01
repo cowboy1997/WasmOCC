@@ -11,11 +11,13 @@ export class occObject3D {
     });
 
 
-
     public mesh: THREE.Mesh;
 
+    public topoShape: WasmOCC.TopoDS_Shape;
+
     public drawTopoShape(topoShape: WasmOCC.TopoDS_Shape): occObject3D {
-        let triData = WasmOCC.getTriangleData(topoShape, 0.5, 0.5);
+        let triData = WasmOCC.getTriangleData(topoShape, 0.4, 0.4);
+        this.topoShape=topoShape;
         let indices: number[] = triData.indices();
         let vertexs: number[] = triData.vertexs();
         let uvs: number[] = triData.uvs();

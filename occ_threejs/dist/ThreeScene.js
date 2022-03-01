@@ -12,6 +12,7 @@ export class ThreeScene {
             this.render();
             this.controls.update();
         };
+        this.objs = new Map();
         this.init();
     }
     init() {
@@ -127,6 +128,12 @@ export class ThreeScene {
         catch (_a) {
         }
         this.controls.update();
+    }
+    clearObject() {
+        for (let obj of this.objs.values()) {
+            this.scene.remove(obj.mesh);
+            obj.topoShape["delete"]();
+        }
     }
 }
 //# sourceMappingURL=ThreeScene.js.map

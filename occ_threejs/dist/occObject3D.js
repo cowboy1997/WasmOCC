@@ -2,7 +2,8 @@ import * as THREE from "../lib/threejs/three.module.js";
 import { WasmOCC } from "../WasmOCC.js";
 export class occObject3D {
     drawTopoShape(topoShape) {
-        let triData = WasmOCC.getTriangleData(topoShape, 0.5, 0.5);
+        let triData = WasmOCC.getTriangleData(topoShape, 0.4, 0.4);
+        this.topoShape = topoShape;
         let indices = triData.indices();
         let vertexs = triData.vertexs();
         let uvs = triData.uvs();
