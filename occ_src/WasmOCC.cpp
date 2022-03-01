@@ -1,4 +1,5 @@
 #include "WasmOCC.h"
+#include <sstream>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
@@ -24,8 +25,7 @@
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepOffsetAPI_ThruSections.hxx>
 #include <Poly.hxx>
-
-
+#include <BRepTools.hxx>
 namespace WasmOCC {
 
 
@@ -221,5 +221,17 @@ namespace WasmOCC {
 		}
 		return triData;
 	}
+	
+	
+	TopoDS_Shape readBrep(std::string brepData)
+	{
+		TopoDS_Shape aShape;
+		BRep_Builder aBuilder;
+		std::stringstream ss;
+		ss << brepData;
+		BRepTools::Read (aShape, ss, aBuilder);
+		return aShape;
+	}
+
 }
 

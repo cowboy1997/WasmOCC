@@ -73,4 +73,5 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	
 	emscripten::function("getTriangleData", &WasmOCC::getTriangleData, emscripten::allow_raw_pointers());
 	emscripten::function("MakeBottle", &WasmOCC::MakeBottle, emscripten::allow_raw_pointers());
+	emscripten::function("readBrep", &WasmOCC::readBrep, emscripten::allow_raw_pointers());
 }

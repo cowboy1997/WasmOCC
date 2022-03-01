@@ -8,4 +8,6 @@ namespace WasmOCC
 	TopoDS_Shape MakeBottle(double myWidth, double myHeight, double myThickness);
 
 	TriangleData* getTriangleData(TopoDS_Shape topoShape,double theLinDeflection,double theAngDeflection);
+
+	TopoDS_Shape readBrep(std::string brepData);
 }
