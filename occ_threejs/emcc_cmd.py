@@ -24,7 +24,7 @@ def emcc_cmd():
 				fileName = fileName.replace("\\", "/")
 				lib_files += " " + fileName
 
-	cmd_str = "emcc -O3 --bind" + cpp_files +lib_files +" -I" + occInc_path +" -o WasmOCC.js"+" -s ALLOW_MEMORY_GROWTH=1 -std=c++11"
+	cmd_str = "emcc -O3 --bind" + cpp_files +lib_files +" -I" + occInc_path +" -o WasmOCC.js -s ALLOW_MEMORY_GROWTH=1"
 	p = subprocess.Popen(cmd_str, shell=True)
 	p.communicate()
 
