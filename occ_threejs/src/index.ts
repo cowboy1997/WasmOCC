@@ -13,22 +13,37 @@ export class occApp {
     constructor() {
         this.world = new ThreeScene();
         this.MakeBottle(50, 70, 30);
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('file').style.display = '';
     }
 
 
-
-    public openBrep(BrepData:string)
+    public readStep(data:string)
     {
         this.world.clearObject();
-        document.getElementById('loading').style.display = "";
-        let topoShape= WasmOCC.readBrep(BrepData); 
+        let topoShape= WasmOCC.readStep(data); 
         let obj = new occObject3D();
         obj.drawTopoShape(topoShape);
         this.world.objs.set(0,obj);
         this.world.scene.add(obj.mesh);
-        document.getElementById('loading').style.display = 'none';
+        this.world.setCamera();
+    }
+    public readBrep(data:string)
+    {
+        this.world.clearObject();
+        let topoShape= WasmOCC.readBrep(data); 
+        let obj = new occObject3D();
+        obj.drawTopoShape(topoShape);
+        this.world.objs.set(0,obj);
+        this.world.scene.add(obj.mesh);
+        this.world.setCamera();
+    }
+    public readIges(data:string)
+    {
+        this.world.clearObject();
+        let topoShape= WasmOCC.readIges(data); 
+        let obj = new occObject3D();
+        obj.drawTopoShape(topoShape);
+        this.world.objs.set(0,obj);
+        this.world.scene.add(obj.mesh);
         this.world.setCamera();
     }
 

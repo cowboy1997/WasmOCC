@@ -2,25 +2,25 @@ export namespace WasmOCC
 {
 
 
-	class TopoDS_Shape
+	export class TopoDS_Shape
 	{
 		constructor();
 		IsNull(): boolean;
 	}
-	class TopoDS_Solid  extends TopoDS_Shape
+	export class TopoDS_Solid  extends TopoDS_Shape
 	{
 		constructor();
 	}
-	class TopoDS_Shell  extends TopoDS_Shape
+	export class TopoDS_Shell  extends TopoDS_Shape
 	{
 		constructor();
 	}
-	class TopoDS_Face  extends TopoDS_Shape
+	export class TopoDS_Face  extends TopoDS_Shape
 	{
 		constructor();
 	}
 
-	class BRepPrimAPI_MakeBox
+	export class BRepPrimAPI_MakeBox
 	{
 		constructor();
 		constructor(dx:number,dy:number,dz:number);
@@ -35,15 +35,17 @@ export namespace WasmOCC
 	}
 
 	
-	class TriangleData
+	export class TriangleData
 	{
 		vertexs(): number[];
 		normals(): number[];
 		uvs(): number[];
 		indices(): number[];
 	}
-	function getTriangleData(Topo_Shape:TopoDS_Shape,theLinDeflection:number,theAngDeflection:number):TriangleData;
-	function MakeBottle(width:number, height:number,thickness:number): TopoDS_Shape;
-	function readBrep(BrepData:string): TopoDS_Shape;
+	export function getTriangleData(Topo_Shape:TopoDS_Shape,theLinDeflection:number,theAngDeflection:number):TriangleData;
+	export function MakeBottle(width:number, height:number,thickness:number): TopoDS_Shape;
+	export function readBrep(data:string): TopoDS_Shape;
+	export function readIges(data:string): TopoDS_Shape;
+	export function readStep(data:string): TopoDS_Shape;
 
 }
