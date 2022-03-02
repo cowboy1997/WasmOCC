@@ -30,7 +30,7 @@ function searchFile(dir,fileType){
 
 var lib_files = searchFile(libDir,".a");
 var cpp_files = searchFile(cppDir,".cpp");
-cmd = "emcc --bind" + cpp_files +lib_files +" -I" + occInc_path +" -o WasmOCC.js -s ALLOW_MEMORY_GROWTH=1  -O3"
+cmd = "emcc --bind" + cpp_files +lib_files +" -I" + occInc_path +" -o WasmOCC.js -s ALLOW_MEMORY_GROWTH=1 -O3"
 
 console.log(cmd);
 exec(cmd, function(error, stdout, stderr) {
