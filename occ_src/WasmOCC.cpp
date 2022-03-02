@@ -26,8 +26,10 @@
 #include <BRepOffsetAPI_ThruSections.hxx>
 #include <Poly.hxx>
 #include <BRepTools.hxx>
-namespace WasmOCC {
-
+#include <STEPControl_Reader.hxx>
+#include <IGESControl_Reader.hxx>
+namespace WasmOCC
+{
 
 	TopoDS_Shape MakeBottle(double myWidth, double myHeight, double myThickness)
 	{
@@ -62,17 +64,14 @@ namespace WasmOCC {
 		gp_Vec aPrismVec(0, 0, myHeight);
 		TopoDS_Shape myBody = BRepPrimAPI_MakePrism(myFaceProfile, aPrismVec);
 
-		//Body : Apply Fillets
+		// Body : Apply Fillets
 		BRepFilletAPI_MakeFillet mkFillet(myBody);
 
-
-	
-
-
 		TopExp_Explorer anEdgeExplorer(myBody, TopAbs_EDGE);
-		while (anEdgeExplorer.More()) {
+		while (anEdgeExplorer.More())
+		{
 			TopoDS_Edge anEdge = TopoDS::Edge(anEdgeExplorer.Current());
-			//Add edge to fillet algorithm
+			// Add edge to fillet algorithm
 			mkFillet.Add(myThickness / 12., anEdge);
 			anEdgeExplorer.Next();
 		}
@@ -87,19 +86,21 @@ namespace WasmOCC {
 		TopoDS_Shape myNeck = MKCylinder.Shape();
 		myBody = BRepAlgoAPI_Fuse(myBody, myNeck);
 
-		
 		// Body : Create a Hollowed Solid
-		TopoDS_Face   faceToRemove;
+		TopoDS_Face faceToRemove;
 		Standard_Real zMax = -1;
-		for (TopExp_Explorer aFaceExplorer(myBody, TopAbs_FACE); aFaceExplorer.More(); aFaceExplorer.Next()) {
+		for (TopExp_Explorer aFaceExplorer(myBody, TopAbs_FACE); aFaceExplorer.More(); aFaceExplorer.Next())
+		{
 			TopoDS_Face aFace = TopoDS::Face(aFaceExplorer.Current());
-			// Check if <aFace> is the top face of the bottle's neck 
+			// Check if <aFace> is the top face of the bottle's neck
 			Handle(Geom_Surface) aSurface = BRep_Tool::Surface(aFace);
-			if (aSurface->DynamicType() == STANDARD_TYPE(Geom_Plane)) {
+			if (aSurface->DynamicType() == STANDARD_TYPE(Geom_Plane))
+			{
 				Handle(Geom_Plane) aPlane = Handle(Geom_Plane)::DownCast(aSurface);
 				gp_Pnt aPnt = aPlane->Location();
 				Standard_Real aZ = aPnt.Z();
-				if (aZ > zMax) {
+				if (aZ > zMax)
+				{
 					zMax = aZ;
 					faceToRemove = aFace;
 				}
@@ -135,13 +136,13 @@ namespace WasmOCC {
 		TopoDS_Wire threadingWire2 = BRepBuilderAPI_MakeWire(anEdge1OnSurf2, anEdge2OnSurf2);
 		BRepLib::BuildCurves3d(threadingWire1);
 		BRepLib::BuildCurves3d(threadingWire2);
-		// Create Threading 
+		// Create Threading
 		BRepOffsetAPI_ThruSections aTool(Standard_True);
 		aTool.AddWire(threadingWire1);
 		aTool.AddWire(threadingWire2);
 		aTool.CheckCompatibility(Standard_False);
 		TopoDS_Shape myThreading = aTool.Shape();
-		// Building the Resulting Compound 
+		// Building the Resulting Compound
 		TopoDS_Compound aRes;
 		BRep_Builder aBuilder;
 		aBuilder.MakeCompound(aRes);
@@ -150,17 +151,18 @@ namespace WasmOCC {
 		return aRes;
 	}
 
-	TriangleData* getTriangleData(TopoDS_Shape topoShape,double theLinDeflection,double theAngDeflection)
+	TriangleData *getTriangleData(TopoDS_Shape topoShape, double theLinDeflection, double theAngDeflection)
 	{
-		BRepMesh_IncrementalMesh(topoShape,theLinDeflection,false,theAngDeflection);
-		TriangleData* triData=new TriangleData();
+		BRepMesh_IncrementalMesh(topoShape, theLinDeflection, false, theAngDeflection);
+		TriangleData *triData = new TriangleData();
 		int newStart = 0;
 		for (TopExp_Explorer aFaceExplorer(topoShape, TopAbs_FACE); aFaceExplorer.More(); aFaceExplorer.Next())
 		{
 			TopoDS_Face aFace = TopoDS::Face(aFaceExplorer.Current());
 			TopLoc_Location location;
-			Handle(Poly_Triangulation)  triFace = BRep_Tool::Triangulation(aFace, location);
-			if (triFace.IsNull()) continue;
+			Handle(Poly_Triangulation) triFace = BRep_Tool::Triangulation(aFace, location);
+			if (triFace.IsNull())
+				continue;
 			int nbTri = triFace->NbTriangles();
 			Poly::ComputeNormals(triFace);
 			auto nodes = triFace->InternalNodes();
@@ -169,20 +171,20 @@ namespace WasmOCC {
 			auto tris = triFace->InternalTriangles();
 			for (Standard_Integer aNodeIter = nodes.Lower(); aNodeIter <= nodes.Upper(); ++aNodeIter)
 			{
-				 gp_Pnt vertex= nodes.Value(aNodeIter);
-				 gp_Pnt2d uv = UVNodes.Value(aNodeIter);
-				 gp_Vec3f normalf = Normals.Value(aNodeIter);
-				 gp_Dir normal = gp_Dir(normalf.x(), normalf.y(), normalf.z());
-				 triData->vertexs.push_back(vertex.X());
-				 triData->vertexs.push_back(vertex.Y());
-				 triData->vertexs.push_back(vertex.Z()); 
-				 triData->normals.push_back(normal.X());
-				 triData->normals.push_back(normal.Y());
-				 triData->normals.push_back(normal.Z());
-				 triData->uvs.push_back(uv.X());
-				 triData->uvs.push_back(uv.Y());
+				gp_Pnt vertex = nodes.Value(aNodeIter);
+				gp_Pnt2d uv = UVNodes.Value(aNodeIter);
+				gp_Vec3f normalf = Normals.Value(aNodeIter);
+				gp_Dir normal = gp_Dir(normalf.x(), normalf.y(), normalf.z());
+				triData->vertexs.push_back(vertex.X());
+				triData->vertexs.push_back(vertex.Y());
+				triData->vertexs.push_back(vertex.Z());
+				triData->normals.push_back(normal.X());
+				triData->normals.push_back(normal.Y());
+				triData->normals.push_back(normal.Z());
+				triData->uvs.push_back(uv.X());
+				triData->uvs.push_back(uv.Y());
 			}
-			int max=0;
+			int max = 0;
 			for (int i = 1; i <= nbTri; i++)
 			{
 				Poly_Triangle aTriangle = triFace->Triangle(i);
@@ -191,47 +193,69 @@ namespace WasmOCC {
 				int Index3 = 0;
 				if ((aFace.Orientation() == TopAbs_REVERSED))
 				{
-				    Index1 = aTriangle.Value(1)-1;
-					Index2 = aTriangle.Value(3)-1;
-					Index3 = aTriangle.Value(2)-1;
+					Index1 = aTriangle.Value(1) - 1;
+					Index2 = aTriangle.Value(3) - 1;
+					Index3 = aTriangle.Value(2) - 1;
 				}
 				else
 				{
-					Index1 = aTriangle.Value(1)-1;
-					Index2 = aTriangle.Value(2)-1;
-					Index3 = aTriangle.Value(3)-1;
+					Index1 = aTriangle.Value(1) - 1;
+					Index2 = aTriangle.Value(2) - 1;
+					Index3 = aTriangle.Value(3) - 1;
 				}
-				if(Index1>max)
+				if (Index1 > max)
 				{
-					max=Index1;
+					max = Index1;
 				}
-				if(Index2>max)
+				if (Index2 > max)
 				{
-					max=Index2;
+					max = Index2;
 				}
-				if(Index3>max)
+				if (Index3 > max)
 				{
-					max=Index3;
+					max = Index3;
 				}
-				triData->indices.push_back(Index1+newStart);
-				triData->indices.push_back(Index2+newStart);
-				triData->indices.push_back(Index3+newStart);
+				triData->indices.push_back(Index1 + newStart);
+				triData->indices.push_back(Index2 + newStart);
+				triData->indices.push_back(Index3 + newStart);
 			}
 			newStart += max + 1;
 		}
 		return triData;
 	}
-	
-	
+
 	TopoDS_Shape readBrep(std::string brepData)
 	{
 		TopoDS_Shape aShape;
 		BRep_Builder aBuilder;
 		std::stringstream ss;
 		ss << brepData;
-		BRepTools::Read (aShape, ss, aBuilder);
+		BRepTools::Read(aShape, ss, aBuilder);
+		return aShape;
+	}
+
+	TopoDS_Shape readStep(std::string stepData)
+	{
+		STEPControl_Reader reader;
+		std::stringstream ss;
+		ss << stepData;
+		reader.ReadStream(nullptr,ss);
+		Standard_Integer NbRoots = reader.NbRootsForTransfer();
+		Standard_Integer NbTrans = reader.TransferRoots();
+		TopoDS_Shape aShape = reader.OneShape();
+		return aShape;
+	}
+
+	TopoDS_Shape readIges(std::string stepData)
+	{
+		IGESControl_Reader  reader;
+		std::stringstream ss;
+		ss << stepData;
+		reader.ReadStream(nullptr,ss);
+		Standard_Integer NbRoots = reader.NbRootsForTransfer();
+		Standard_Integer NbTrans = reader.TransferRoots();
+		TopoDS_Shape aShape = reader.OneShape();
 		return aShape;
 	}
 
 }
-

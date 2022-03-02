@@ -1,5 +1,4 @@
 ﻿#include "WasmOCC.h"
-#include "TriangleData.h"
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Shell.hxx>
@@ -9,7 +8,7 @@
 
 
 #define EMBIND_LAMBDA(retval, arglist, impl) (retval (*) arglist) [] arglist impl
-EMSCRIPTEN_BINDINGS(my_module) {
+EMSCRIPTEN_BINDINGS(WasmOCC) {
 	emscripten::class_<TopoDS_Shape>("TopoDS_Shape")
 	    .constructor()
 		.function("IsNull", &TopoDS_Shape::IsNull);;
@@ -30,8 +29,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 		.function("LeftFace", &BRepPrimAPI_MakeBox::LeftFace)
 		.function("RightFace", &BRepPrimAPI_MakeBox::RightFace)
 		.function("TopFace", &BRepPrimAPI_MakeBox::TopFace);
-
-
 
 	emscripten::class_<WasmOCC::TriangleData>("TriangleData")
 		.function("vertexs", EMBIND_LAMBDA(emscripten::val, (WasmOCC::TriangleData* triData), {
@@ -74,4 +71,6 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	emscripten::function("getTriangleData", &WasmOCC::getTriangleData, emscripten::allow_raw_pointers());
 	emscripten::function("MakeBottle", &WasmOCC::MakeBottle, emscripten::allow_raw_pointers());
 	emscripten::function("readBrep", &WasmOCC::readBrep, emscripten::allow_raw_pointers());
+	emscripten::function("readStep", &WasmOCC::readStep, emscripten::allow_raw_pointers());
+	emscripten::function("readIges", &WasmOCC::readIges, emscripten::allow_raw_pointers());
 }
