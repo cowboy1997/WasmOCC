@@ -4,7 +4,7 @@ import { occObject3D } from "./occObject3D.js";
 export class occApp {
     constructor() {
         this.world = new ThreeScene();
-        this.MakeBottle(50, 70, 30);
+        //this.MakeBottle(50, 70, 30);
     }
     readStep(data) {
         this.world.clearObject();
