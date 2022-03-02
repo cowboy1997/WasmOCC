@@ -21,7 +21,7 @@
 <body id="body">
     <div id="file" >
        <label for="fileInput">Choose BREP file to upload: </label>
-       <input type="file" id="fileInput"  accept=".brep">
+       <input type="file" id="fileInput"  accept=".brep,.stp,.step,.igs,.iges" >
     </div>
 
     <p id="loading">loading......</p>
@@ -30,14 +30,29 @@
         var app = null;
         document.getElementById('file').style.display = 'none';
         fileInput.onchange = function () {
+                    document.getElementById('loading').style.display = '';
                     if (fileInput.files.length == 0) { return; }
                     var aFile = fileInput.files[0];
                     var aReader = new FileReader();
                     aReader.onload = function () {
                         if(aReader.result)
                         {
-                            app.openBrep(aReader.result);
+                            var fileName=fileInput.files[0].name;
+                            var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+                            if(fileExtension=="step"||fileExtension=="stp")
+                            {
+                                app.readStep(aReader.result);
+                            }
+                            else if(fileExtension=="step"||fileExtension=="stp")
+                            {
+                                app.readBrep(aReader.result);
+                            }
+                            else if(fileExtension=="iges"||fileExtension=="igs")
+                            {
+                                app.readIgs(aReader.result);
+                            }
                         }
+                        document.getElementById('loading').style.display = 'none';
                     };
                     aReader.readAsText(aFile);        
                 };
@@ -48,6 +63,8 @@
         import { occApp } from "./dist/index.js";
         WasmOCC.onRuntimeInitialized = function () {
                app= new occApp();
+               document.getElementById('loading').style.display = 'none';
+               document.getElementById('file').style.display = '';
         }
     </script>
 </body>
