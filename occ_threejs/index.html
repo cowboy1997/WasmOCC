@@ -39,6 +39,7 @@
                         {
                             var fileName=fileInput.files[0].name;
                             var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+                            fileExtension=fileExtension.toLowerCase();
                             if(fileExtension=="step"||fileExtension=="stp")
                             {
                                 app.readStep(aReader.result);
