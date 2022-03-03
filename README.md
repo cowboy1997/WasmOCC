@@ -2,12 +2,12 @@
 这个一个occ编译wasm的简单例子，在web中计算并渲染出occ中瓶子的例子。
 occ的WebAssembly实现，用了threejs渲染。
 
+项目的demo预览https://cowboy1997.github.io/WasmOCC/occ_threejs 
+
 该例子主要实现前端实时绘制渲染occ官方瓶子案例，以及打开step、iges和brep文件。
 
 threejs中用到的occ相关的方法已经编译封装好了，如果需要添加新的方法请修改occ_src文件夹下的c++代码，具体方法可以查看我写的博客https://blog.csdn.net/qq_35187495/article/details/123172849
-
-项目的demo预览https://cowboy1997.github.io/WasmOCC/occ_threejs 
-
+3
 1、对occ的编译可以occ_threejs文件下运行node emcc_cmd.js文件进行编译，在此前提需要用Emscripten编译opencascade为静态库并修改emcc_cmd.js文件中的相关路径。
 
 2、使用例子
