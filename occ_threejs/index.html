@@ -42,11 +42,11 @@
                             fileExtension=fileExtension.toLowerCase();
                             if(fileExtension=="brep")
                             {
-                                app.readStep(aReader.result);
+                                app.readBrep(aReader.result);
                             }
                             else if(fileExtension=="step"||fileExtension=="stp")
                             {
-                                app.readBrep(aReader.result);
+                                app.readStep(aReader.result);
                             }
                             else if(fileExtension=="iges"||fileExtension=="igs")
                             {
