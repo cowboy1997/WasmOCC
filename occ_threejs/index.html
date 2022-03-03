@@ -40,7 +40,7 @@
                             var fileName=fileInput.files[0].name;
                             var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
                             fileExtension=fileExtension.toLowerCase();
-                            if(fileExtension=="step"||fileExtension=="stp")
+                            if(fileExtension=="brep")
                             {
                                 app.readStep(aReader.result);
                             }
