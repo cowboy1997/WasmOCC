@@ -134,6 +134,7 @@ export class ThreeScene {
             this.scene.remove(obj.mesh);
             obj.topoShape["delete"]();
         }
+        this.objs.clear();
     }
 }
 //# sourceMappingURL=ThreeScene.js.map
