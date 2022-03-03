@@ -6,9 +6,7 @@ occ的WebAssembly实现，用了threejs渲染，threejs中用到的occ相关的�
 
 1、对occ的编译可以occ_threejs文件下运行node emcc_cmd.js文件进行编译,在此前提需要用Emscripten编译opencascade为静态库并修改emcc_cmd.py文件中的相关路径。
 
-2、对ts的编译可以occ_threejs文件夹下运行tsc进行编译。
-
-3、使用例子
+2、使用例子
 
 import { WasmOcc } from "WasmOcc.js";
 
@@ -16,5 +14,5 @@ let box = new WasmOcc.BRepPrimAPI_MakeBox(10, 10, 10);
 
 let solid = box.Solid();
 
-4、启动一个服务打开index.html
+3、启动一个服务打开index.html
 
